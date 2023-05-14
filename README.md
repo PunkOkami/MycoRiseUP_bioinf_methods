@@ -30,10 +30,10 @@ Parallel to occurance filtering our pipeline perfomes pair-wise clustering of sa
 To construct trophic networks we usee NetCoMi R package. When we constructed networks made up of taxa from all metacategories we limit taxa to those that have over 1k hits. We also construct networks of pairs of metacategories and compare taxonomic profile of two sets of samples.
 
 ## Authors
-Sampling and sequncing: Mikołaj Charchuta - mikcha1@st.amu.edu.pl
-Bioinformatics work: Maksymilian Chmielewski - makchm@st.amu.edu.pl
+Sampling and sequncing: Mikołaj Charchuta - mikcha1@st.amu.edu.pl\
+Bioinformatics work: Maksymilian Chmielewski - makchm@st.amu.edu.pl\
 Supervisor: Prof. UAM dr hab. Władysław Polcyn - polcyn@amu.edu.pl
 
 ## Affiliations
-Bioinformatics Section of Natural Sciences Club
+Bioinformatics Section of Natural Sciences Club\
 Adam Mickiwicz University in Poznań
