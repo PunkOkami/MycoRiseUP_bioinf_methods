@@ -4,9 +4,9 @@ import csv
 import copy
 seaborn.set(font_scale=0.6)
 
-data_file = open('species_freq_table_filtered.tsv')
+# Open data file and reads all metacategories present
+data_file = open('../../Data/species_freq_table_filtered.tsv')
 data_reader = csv.reader(data_file, delimiter='\t')
-
 guild_set = set()
 guild_category_index = 0
 first_line = True
@@ -18,11 +18,13 @@ for row in data_reader:
 	guild_set.add(row[guild_category_index])
 guild_set.remove('ENA')
 
+# Prints all cats present and asks user what should be present on
 print('Guild categories present in the file, write what categories you want in the heatmap[guild1, guild2, ...]:')
 print(', '.join(guild_set))
 chosen_guilds = input('>>>').split(', ')
 guild_set.intersection_update(chosen_guilds)
 
+# Moves to begining of the file and reads all rows from set categories and sorts rows based on the category
 data_file.seek(0)
 most_common_dict = {}
 freq_data = {}
@@ -53,7 +55,9 @@ for row in data_reader:
 			highest_in_guild = (species, total_freq)
 			most_common_dict[guild_category] = highest_in_guild
 
+# order_on_heatmap is used as a hint on the heatmap to show what is where
 order_on_heatmap = list(freq_data.keys())
+# This provides statistics for each category selected, helps to understand heatmap and data
 guild_population_num = {}
 for guild, species in freq_data.items():
 	species_num = len(species)
@@ -63,6 +67,7 @@ for guild, species in freq_data.items():
 	population_data.extend(highest_in_guild)
 	guild_population_num[guild] = population_data
 
+# Nice table printing of data
 print('Guild	-	Number of species	-	Total abundance	-	Most common species	-	Their population')
 for guild, population_data in guild_population_num.items():
 	output = [str(item) for item in population_data]
@@ -70,7 +75,9 @@ for guild, population_data in guild_population_num.items():
 	output = '	-	'.join(output)
 	print(output)
 
+# Reverse is needed as the first category in data will be on top and in legend would be on the bottom without reversing
 order_on_heatmap.reverse()
+# Changes data format to fir seaborn and to make it percentile normalisation
 heatmap_data = []
 for value in freq_data.values():
 	copyied = copy.deepcopy(value)
@@ -88,6 +95,7 @@ for i in range(len(heatmap_data)):
 		seq[j] = perc
 	heatmap_data[i] = seq
 
+# Makes heatmap, adds all labels, titles and shows it
 species_guilds_heatmap = seaborn.heatmap(heatmap_data, cmap="crest", yticklabels=False)
 species_guilds_heatmap.set_xticklabels(sample_names)
 species_guilds_heatmap.set_ylabel('                      '.join(order_on_heatmap), fontsize=10, weight='bold')

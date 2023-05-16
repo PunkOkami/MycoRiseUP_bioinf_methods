@@ -7,11 +7,13 @@ from matplotlib.lines import Line2D
 from sklearn.cluster import KMeans
 from scipy.spatial import ConvexHull
 
-freq_data_file = open('species_freq_table_filtered.tsv')
-sampling_data_file = open('species_freq_table_expanded.tsv')
+# Reads data from two files, one to sample from (that is more random set) to create bootsrap data and real data
+freq_data_file = open('../../Data/species_freq_table_filtered.tsv')
+sampling_data_file = open('../../Data/species_freq_table.tsv')
 freq_data_reader = csv.reader(freq_data_file, delimiter='\t')
 sampling_data_reader = csv.reader(sampling_data_file, delimiter='\t')
 
+# Creates matrix of real data to calculate indexes used as clustering parameters
 sample_names = []
 first_line = True
 real_data_matrix = []
@@ -31,10 +33,10 @@ for line in freq_data_reader:
 		real_data_matrix[i].append(float(line[i]))
 	species_count += 1
 
+# Reads data in sampling set, but as a list as there is no need to keep samples separate
 first_line = True
 sample_data_list = []
 samples_indexes = slice(0)
-sample_num = 0
 for line in sampling_data_reader:
 	if first_line:
 		samples_indexes = slice(line.index('Species')+1, line.index('Kingdom'))
@@ -44,8 +46,10 @@ for line in sampling_data_reader:
 	for num in line:
 		sample_data_list.append(float(num))
 
+# Calculates Margalef index for real data
 margalef_of_real_data = list(alpha_diversity('margalef', real_data_matrix))
 
+# Creates 500 random samples and calculates Margalef of that data
 rep_num = 500
 booted_margalefs = []
 for i in range(rep_num):
@@ -53,14 +57,18 @@ for i in range(rep_num):
 	random_margalef = alpha_diversity('margalef', random_sample)[0]
 	booted_margalefs.append(random_margalef)
 
+# Calculates max value in each sample to later get max value in whole matrix
 maxes_in_sample_data = [int(max(sample)) for sample in real_data_matrix]
 simpson_of_real_data = list(alpha_diversity('simpson_e', real_data_matrix))
+
+# Here bootstrap method differs slightly from one before as this index is more sensive to randmness of data less to richness of the sample
 booted_simpsons = []
 for i in range(rep_num):
 	random_sample = sample(range(0, max(maxes_in_sample_data)), species_count)
 	random_simpson = alpha_diversity('simpson_e', random_sample)[0]
 	booted_simpsons.append(random_simpson)
 
+# Creates simple scatterplot with all points, but no clusters to see how much they differ without that clue
 all_margalef = margalef_of_real_data.copy()
 all_margalef.extend(booted_margalefs)
 all_simpson = simpson_of_real_data.copy()
@@ -71,6 +79,7 @@ plt.xlabel('Margalef index')
 plt.ylabel('Simpson evenness index')
 plt.show()
 
+# Creates first clusters of points then convex hulls that show borders of the clusters and plots that
 all_points = [tup for tup in zip(all_margalef, all_simpson)]
 sample_points = np.array([tup for tup in zip(margalef_of_real_data, simpson_of_real_data)])
 booted_points = np.array([tup for tup in zip(booted_margalefs, booted_simpsons)])
@@ -95,6 +104,7 @@ plt.xlabel('Margalef index')
 plt.ylabel('Simpson evenness index')
 plt.show()
 
+# This clustering is to check is there are two subtly different clusters and to check if two sets of trees (one A and second B) differ much
 model = KMeans(n_clusters=2)
 model.fit(sample_points)
 labels = model.predict(sample_points)
@@ -105,6 +115,7 @@ plt.xlabel('Margalef index')
 plt.ylabel('Simpson evenness index')
 plt.show()
 
+# This prints what samples come into those two clusters and shows that two sets of tress cannot be reconstructed from data by clustering, so they do not differ a lot
 print('----------------------')
 cluster_list = {}
 for (label, sample) in zip(labels, sample_names):
