@@ -1,8 +1,21 @@
-R scripts:
+1. These scripts have file names not working with data in this repo as they are for data filtering and do not produce any analysis and are just for methododlogy transparency
+Python:
+- blast-output-parser.py - parses data from blast output file and adds to OTU table
+- dark_matter_filter.py - filteres OTUs that were not found in database to seperate FASTA file
+- guild_data_merger.py - merges rows with taxonomic data and guild data from FUNGuild
+- guild_categoriser.py - categories taxa into metacategories
+- OTU_merger.py - merges data about OTUs from the same species
+
+2. These scripts have file names in code set to work with how repo is structed so that anyone can check if plots showcased are really what the scripts produce, so without any code modyfications they should work given that user has all packages used
+Python:
+- pathogen_counter.py - pulls out data about Pathogens only, can be chages easily to pull out any metacategory
+- clustermap_maker.py - makes clustermap of samples anmd filteres taxa based on occourance
+- guild_heatmap_maker.py - makes heatmap of set metacategories
+- k-mean_clustering.py - does k-means clustering of bootstrap data and real data and creates 3 scatterplots
+- krona_preparation.py - produces Krona charts of whole taxonomy, guild make-up or some custom set of columns
+
+R:
 - biodevsity_tests.R - computational statistical tests of randomness of data
 - NetCoMi_guilds.R - creation of NetCoMi network for set ecological metacategories
 - NetCoMi_two_sets.R - creation of comparison NetCoMi networks of two sets of trees
 - NetCoMi_whole_taxonomy.R - creation of NetCoMi netwroks of whole taxonomy after filtering
-
-Python scripts:
-
