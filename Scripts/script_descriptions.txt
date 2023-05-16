@@ -1,0 +1,8 @@
+R scripts:
+- biodevsity_tests.R - computational statistical tests of randomness of data
+- NetCoMi_guilds.R - creation of NetCoMi network for set ecological metacategories
+- NetCoMi_two_sets.R - creation of comparison NetCoMi networks of two sets of trees
+- NetCoMi_whole_taxonomy.R - creation of NetCoMi netwroks of whole taxonomy after filtering
+
+Python scripts:
+
