@@ -68,7 +68,7 @@ plt.show()
 # Asks if data is accaptable (as this script also filters data) and if 'Y' writes filtered data. I gave it option to not be accaptable so that user can experiment with different cut-offs
 ask = input("Is this data acceptable? [Y/N]\n>>>")
 if ask == "Y":
-	filtered_file = open("End_results/species_freq_table_filtered.tsv", mode="w")
+	filtered_file = open("../../Data/species_freq_table_filtered.tsv", mode="w")
 	filtered_file_writer = csv.writer(filtered_file, delimiter="\t")
 	filtered_file_writer.writerow(names)
 	for seq, hits in heatmap_data.items():
